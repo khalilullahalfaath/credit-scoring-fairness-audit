@@ -1,0 +1,13 @@
+# Unpinned on purpose: pin with `pip freeze` once the environment works.
+pandas
+numpy
+scikit-learn
+fairlearn
+matplotlib
+seaborn
+fastapi
+uvicorn
+pydantic
+jupyter
+pytest
+httpx

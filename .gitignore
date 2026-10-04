@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+venv/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Personal notes (not for the public repo)
+notes/
+
+# Data (re-downloadable; never commit)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Model binaries (regenerate with the training script; metrics.json stays tracked)
+models/*
+!models/.gitkeep
+!models/metrics.json
+
+# Caches / logs
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.log
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
