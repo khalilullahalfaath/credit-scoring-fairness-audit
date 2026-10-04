@@ -2,11 +2,11 @@
 
 **Model:** TODO (name + version) | **Date:** TODO | **Auditor:** TODO
 
-Written for a reader without a data-science background. No metric appears without a plain-language sentence beside it.
+Plain-language report for a non-technical reader.
 
 ## 1. Summary
 
-- **Verdict:** TODO — approved / approved with conditions / not approved.
+- **Verdict:** TODO (approved / approved with conditions / not approved)
 - **One-paragraph reason:** TODO
 - **Biggest finding:** TODO
 
@@ -15,11 +15,11 @@ Written for a reader without a data-science background. No metric appears withou
 - What the model decides: TODO
 - Groups compared and how they were formed: TODO
 - Data audited (size, period, source): TODO
-- Not audited: TODO (be explicit)
+- Not audited: TODO
 
 ## 3. Findings
 
-For each metric: the number, what it means in plain language, and whether it is a concern.
+Each metric with its value, a plain-language meaning, and whether it is a concern.
 
 | Metric | Group A | Group B | Plain-language meaning | Concern? |
 |---|---|---|---|---|
@@ -30,17 +30,17 @@ For each metric: the number, what it means in plain language, and whether it is 
 
 ### 3b. LLM group-swap findings
 
-Same prompt, only the name or gender changed. Measured on one LLM: TODO (name + version).
+Same prompt, only the name or gender changed. LLM: TODO (name + version).
 
 | Group swap | Prompt pairs | Mean output gap | Plain-language meaning | Concern? |
 |---|---|---|---|---|
 | TODO | TODO | TODO | TODO | TODO |
 
-State what the gap measures (sentiment or content) and how many pairs it rests on. A gap from a handful of pairs is an anecdote, not a finding.
+Measure: TODO (sentiment or content gap). Number of prompt pairs: TODO.
 
 ## 4. Where the metrics disagree
 
-TODO — when base rates differ between groups, these metrics cannot all be satisfied at once. State which two definitions this audit prioritises, why, and what that trades away.
+TODO
 
 ## 5. Mitigation
 
@@ -51,9 +51,9 @@ TODO — when base rates differ between groups, these metrics cannot all be sati
 
 ## 6. Limitations and certainty
 
-- TODO — what this audit cannot show
-- TODO — how confident the numbers are (sample size per group, intervals if computed)
-- TODO — data caveats (e.g. synthetic data; sensitive attributes may be proxies)
+- TODO: what this audit cannot show
+- TODO: confidence in the numbers (sample size per group, intervals)
+- TODO: data caveats
 
 ## 7. Recommendations
 
@@ -62,4 +62,4 @@ TODO — when base rates differ between groups, these metrics cannot all be sati
 
 ## 8. Reproduce
 
-TODO — the exact command that regenerates every number above.
+TODO

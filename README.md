@@ -2,76 +2,72 @@
 
 A credit scoring model (score + probability + risk category) that passes a documented bias audit before it is allowed to ship.
 
-**Status:** Started | **Roadmap:** Project 5 (Credit Score Calculator) + Project 127 (Bias & Fairness Audit) | **Brief:** H2
+**Status:** Started | **Roadmap:** Project 5 (Credit Score Calculator) + Project 127 (Bias & Fairness Audit)
 
 ## Table of Contents
 
-- [Credit Scoring with Fairness Audit](#credit-scoring-with-fairness-audit)
-  - [Table of Contents](#table-of-contents)
-  - [Project Brief](#project-brief)
-  - [Fairness Decisions](#fairness-decisions)
-  - [Dataset](#dataset)
-  - [Project Structure](#project-structure)
-  - [Getting Started](#getting-started)
-  - [Results](#results)
-    - [Model comparison](#model-comparison)
-    - [Threshold choice](#threshold-choice)
-    - [Fairness metrics (on the chosen model)](#fairness-metrics-on-the-chosen-model)
-    - [LLM group-swap test (Project 127)](#llm-group-swap-test-project-127)
-  - [Model Card](#model-card)
-    - [Model Information](#model-information)
-    - [Intended Use](#intended-use)
-    - [Training Data](#training-data)
-    - [Performance](#performance)
-    - [Risk categories](#risk-categories)
-    - [Ethical Considerations](#ethical-considerations)
-  - [Audit Report](#audit-report)
-  - [Limitations](#limitations)
-  - [References](#references)
+- [Project Brief](#project-brief)
+- [Fairness Decisions](#fairness-decisions)
+- [Dataset](#dataset)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Results](#results)
+- [Model Card](#model-card)
+- [Audit Report](#audit-report)
+- [Limitations](#limitations)
+- [References](#references)
 
 ## Project Brief
 
 **The Request:** "A bank wants automatic credit scoring to evaluate customers. It must return a score, a probability, and a risk category. A report shows that results differ across demographic groups; before the model is used, we need an audit we can defend."
 
-**Business constraint:** TODO — cost of approving a defaulter vs. rejecting a good customer, in numbers (state the assumption).
+**Business constraint:** TODO
 
-**Success criteria:** TODO — ROC-AUC, minority-class precision/recall, chosen threshold, API latency.
+**Success criteria:**
+
+| Criterion | Target |
+|---|---|
+| Ranking quality | ROC-AUC > 0.75 on the held-out test set |
+| Probabilities | Calibrated; ECE and Brier reported before and after calibration |
+| Minority (default) class | Precision and recall reported |
+| Decision threshold | Chosen from an explicit business-cost curve |
+| Fairness metrics | Demographic parity, equal opportunity and disparate impact ratio across at least 2 groups; ratios outside 0.80 flagged |
+| Fairness reasoning | Two definitions defended, with the trade-off between them quantified |
+| Metric correctness | Metric tests match hand-computed reference values; coverage >= 70% |
+| API | Response < 200 ms, validated input, Swagger docs, Postman collection |
+| Audit report | Readable without a statistics background; limitations stated per metric |
+| LLM group-swap test | One LLM, group-swapped prompt pairs, output gap per group with a confidence interval |
 
 **Out of scope:**
 - More than one tabular dataset
 - More than two fairness definitions
-- More than one LLM for the group-swap test (Project 127's generative part is in scope, kept to what the card asks)
+- More than one LLM for the group-swap test
 
 ## Fairness Decisions
 
-This is the section reviewers read first. Answer it here, not in an interview.
+**Sensitive attributes used:** TODO
 
-**Sensitive attributes used:** TODO — column names, and how groups were formed (e.g. age bins). State what the dataset does *not* contain.
+**Fairness definitions defended:**
 
-**The two fairness definitions I defend:**
-
-| Definition | Why I chose it | What it costs |
+| Definition | Why | Cost |
 |---|---|---|
-| TODO (e.g. equal opportunity) | TODO | TODO |
-| TODO (e.g. demographic parity) | TODO | TODO |
+| TODO | TODO | TODO |
+| TODO | TODO | TODO |
 
-**Failure-mode question:**
-> "You equalised false-positive rate across groups, but the base rates differ. Which do you pick and why?"
+**Trade-off:** equalizing false-positive rate across groups when base rates differ.
 
-TODO — answer with numbers. Name the impossibility result explicitly: when base rates differ, the common fairness definitions cannot all hold at once.
+TODO
 
-**Mitigation tried:** TODO — what, and the accuracy cost.
+**Mitigation tried:** TODO
 
 ## Dataset
 
-**Primary:** [Credit Score Classification](https://www.kaggle.com/datasets/parisrohan/credit-score-classification) (Kaggle). Anonymised/synthetic data for learning, not real applicant records.
+[Credit Score Classification](https://www.kaggle.com/datasets/parisrohan/credit-score-classification) (Kaggle). Anonymized/synthetic data, not real applicant records. Raw files go in `data/raw/` (git-ignored).
 
-- Rows / features: TODO (verify after download)
+- Rows / features: TODO
 - Target: TODO
 - Class balance: TODO
 - Sensitive-adjacent columns: TODO
-
-Place the raw file in `data/raw/` (git-ignored).
 
 ## Project Structure
 
@@ -86,8 +82,7 @@ credit-scoring-fairness-audit/
 ├── src/                         # preprocessing, training, fairness audit, API
 ├── models/                      # metrics.json committed; model files ignored
 ├── reports/
-│   └── audit_report_template.md
-├── tests/                       # metric tests vs. known reference values
+├── tests/                       # metric tests vs. reference values
 ├── postman/
 ├── requirements.txt
 └── README.md
@@ -101,7 +96,7 @@ venv\Scripts\activate            # Windows; use `source venv/bin/activate` on Li
 pip install -r requirements.txt
 ```
 
-TODO — add the commands for: download data, train, run audit, start API, run tests.
+TODO
 
 ## Results
 
@@ -113,31 +108,27 @@ TODO — add the commands for: download data, train, run audit, start API, run t
 | Logistic Regression | TODO | TODO | TODO | TODO |
 | Random Forest | TODO | TODO | TODO | TODO |
 
-**Chosen model and why:** TODO
+**Chosen model:** TODO
 
 ### Threshold choice
 
-TODO — the business-cost curve and the threshold picked from it.
+TODO
 
-### Fairness metrics (on the chosen model)
+### Fairness metrics
 
 | Group | Selection rate | TPR | FPR | Disparate impact ratio |
 |---|---|---|---|---|
 | TODO | TODO | TODO | TODO | TODO |
 
-Flag any ratio outside the 80% rule of thumb.
+### LLM group-swap test
 
-### LLM group-swap test (Project 127)
+- **LLM (name + version):** TODO
+- **Prompt pairs:** TODO
+- **Measure:** TODO
 
-Done last, after the classifier audit is finished. Needs access to one LLM (API or local) — prepare it before starting this part.
-
-- **LLM used (name + version):** TODO
-- **Prompt pairs:** TODO — count, and what differs within a pair (name / gender only)
-- **Measure:** TODO — output sentiment or content difference per pair
-
-| Group swap | Mean sentiment gap | Notable examples |
-|---|---|---|
-| TODO | TODO | TODO |
+| Group swap | Mean gap | 95% CI | Notable examples |
+|---|---|---|---|
+| TODO | TODO | TODO | TODO |
 
 ## Model Card
 
@@ -150,13 +141,13 @@ Done last, after the classifier audit is finished. Needs access to one LLM (API 
 ### Intended Use
 - **Primary use:** TODO
 - **Users:** TODO
-- **Out of scope:** TODO — e.g. not for real lending decisions; trained on synthetic data.
+- **Out of scope:** TODO
 
 ### Training Data
-- **Source / size / split:** TODO
+TODO
 
 ### Performance
-TODO — link to the Results section.
+TODO
 
 ### Risk categories
 
@@ -171,15 +162,13 @@ TODO
 
 ## Audit Report
 
-Written for a non-technical reader. Template: [`reports/audit_report_template.md`](reports/audit_report_template.md). Finished report: TODO (link).
+TODO
 
 ## Limitations
 
-- TODO — metric limitations (each fairness metric can conflict with the others)
-- TODO — dataset limitations (synthetic; sensitive attributes may be proxies)
+TODO
 
 ## References
 
 - [Fairlearn documentation](https://fairlearn.org/)
 - [Credit Score Classification dataset](https://www.kaggle.com/datasets/parisrohan/credit-score-classification)
-- TODO — add the fairness papers/docs you actually read

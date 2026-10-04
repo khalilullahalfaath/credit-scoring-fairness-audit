@@ -10,4 +10,5 @@ uvicorn
 pydantic
 jupyter
 pytest
+pytest-cov
 httpx
