@@ -12,3 +12,4 @@ jupyter
 pytest
 pytest-cov
 httpx
+jupyterlab

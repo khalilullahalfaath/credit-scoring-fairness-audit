@@ -6,16 +6,28 @@ A credit scoring model (score + probability + risk category) that passes a docum
 
 ## Table of Contents
 
-- [Project Brief](#project-brief)
-- [Fairness Decisions](#fairness-decisions)
-- [Dataset](#dataset)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Results](#results)
-- [Model Card](#model-card)
-- [Audit Report](#audit-report)
-- [Limitations](#limitations)
-- [References](#references)
+- [Credit Scoring with Fairness Audit](#credit-scoring-with-fairness-audit)
+  - [Table of Contents](#table-of-contents)
+  - [Project Brief](#project-brief)
+  - [Fairness Decisions](#fairness-decisions)
+  - [Dataset](#dataset)
+  - [Project Structure](#project-structure)
+  - [Getting Started](#getting-started)
+  - [Results](#results)
+    - [Model comparison](#model-comparison)
+    - [Threshold choice](#threshold-choice)
+    - [Fairness metrics](#fairness-metrics)
+    - [LLM group-swap test](#llm-group-swap-test)
+  - [Model Card](#model-card)
+    - [Model Information](#model-information)
+    - [Intended Use](#intended-use)
+    - [Training Data](#training-data)
+    - [Performance](#performance)
+    - [Risk categories](#risk-categories)
+    - [Ethical Considerations](#ethical-considerations)
+  - [Audit Report](#audit-report)
+  - [Limitations](#limitations)
+  - [References](#references)
 
 ## Project Brief
 
@@ -90,10 +102,23 @@ credit-scoring-fairness-audit/
 
 ## Getting Started
 
-```
+```bash
+# I really recommend using uv, since it's faster and it's compatible with pip
+uv venv
+.venv/Scripts/activate # Windows; use `source .venv/bin/activate` on Linux/macOS
+uv pip install -r requirements.txt
+
+# regular pip
 python -m venv venv
 venv\Scripts\activate            # Windows; use `source venv/bin/activate` on Linux/macOS
 pip install -r requirements.txt
+```
+
+Exploration on this project is in `notebooks/`, so I recommend using Jupyterlab since it's less buggy than vscode jupyter notebook extension.
+
+```bash
+# Assumed that the virtual environment is already activated
+jupyter lab
 ```
 
 TODO
@@ -122,7 +147,7 @@ TODO
 
 ### LLM group-swap test
 
-- **LLM (name + version):** TODO
+- **LLM (name + version):** Deepseek v4.1 Pro
 - **Prompt pairs:** TODO
 - **Measure:** TODO
 
