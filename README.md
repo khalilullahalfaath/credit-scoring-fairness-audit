@@ -57,18 +57,20 @@ A credit scoring model (score + probability + risk category) that passes a docum
 
 ## Fairness Decisions
 
-**Sensitive attributes used:** TODO
+**Sensitive attributes used:** Age, audited in four groups: 18-25, 26-35, 36-45 and 46+ (customers aged 14-17 are removed). Age is chosen because the default rate (share of `Poor` rows) is about 0.30-0.31 for ages 18-45 and about 0.13 for 46+, a difference far larger than sampling noise. Occupation is checked as a secondary attribute only: its default rates (0.26-0.31 across 15 occupations) are about what chance would give.
+
+**Age as a model feature:** not used. Age is kept separately and only used for the audit. Removing it does not remove its proxies (for example `Credit_History_Age`), so how well the remaining features predict age is measured, and a model with `Age` and one without it are compared on ROC-AUC and on the fairness metrics below, to put a number on what excluding it costs. In this data the default rate drops sharply between the 36-45 and 46+ groups rather than gradually, so a model using `Age` would partly be learning that cut-off.
 
 **Fairness definitions defended:**
 
 | Definition | Why | Cost |
 |---|---|---|
-| TODO | TODO | TODO |
-| TODO | TODO | TODO |
+| Equal opportunity (primary): customers who would not default have the same chance of being approved in every age group | Wrongly rejecting a customer who would have repaid is the harm this audit must be able to defend, and this definition measures it directly | Overall approval rates can differ between groups, so the 80% rule can flag the model |
+| Demographic parity, measured by the disparate impact ratio (secondary): each group's approval rate divided by the highest, flagged below 0.80 | It is the standard screening rule and is easy to explain without statistics | Equalizing approval rates when base rates differ means approving more likely defaulters in the higher-risk groups, or rejecting more good customers in 46+, so accuracy falls |
 
 **Trade-off:** equalizing false-positive rate across groups when base rates differ.
 
-TODO
+"Selection" here means approved, not flagged as risky. Because the default rate is about 0.13 for 46+ and 0.30-0.31 for the other groups, an imperfect classifier cannot in general satisfy both definitions at once. Even a perfect classifier would approve about 69-70% of customers aged 18-45 against 87% of 46+, a disparate impact ratio of about 0.79-0.80, so the 80% rule can flag a model whose decisions are all correct (rough figures from the default rates above). When the two definitions conflict, equal opportunity decides, and the disparate impact ratio is reported with this gap explained instead of being forced to 0.80. The size of the conflict is measured on the held-out set in Results, Fairness metrics.
 
 **Mitigation tried:** TODO
 
