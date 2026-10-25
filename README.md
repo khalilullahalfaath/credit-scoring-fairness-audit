@@ -82,7 +82,7 @@ A credit scoring model (score + probability + risk category) that passes a docum
 - Target: `Credit_Score` (`Poor`, `Standard`, `Good`) is mapped to a binary `default_risk`: 1 for `Poor`, 0 for `Standard` and `Good`. The label changes between months for about 58% of customers, so it is a row-level label.
 - Class balance: `Standard` 53.2%, `Poor` 29.0%, `Good` 17.8%; the binary target has a base rate of 0.29 (before customers under 18 are removed).
 - Sensitive-adjacent columns: `Age` (audited, not a model feature), `Occupation` (secondary check), `Name` and `SSN` (identifiers, never used; `Name` can proxy gender or ethnicity). The data contains no gender or ethnicity column, so the audit covers age, with occupation as a secondary check.
-- Data quality: many columns contain placeholders, sentinel values and trailing underscores. The checks and the cleaning rule for every column are in `notebooks/eda.ipynb` (section "Cleaning decisions").
+- Data quality: many columns contain placeholders, sentinel values and trailing underscores. The checks and the cleaning rule for every column are in `notebooks/eda.ipynb` (section "Cleaning decisions"). Cleaning has two layers. Layer 1 (per-row rules: strip underscores, placeholders and sentinels to missing, text parsing, `Type_of_Loan` counts) is a single function in `src/` used in training, evaluation and the API. Layer 2 (recovering a corrupted value from the same customer's other months) needs the customer's history, so it is only applied to training and evaluation data. The API receives a single record, so it fills missing values with the training median or an `Unknown` category instead. A held-out set cleaned with layer 2 can therefore score better than the API will in production; the gap is measured by also scoring the held-out set with layer 1 only.
 
 ## Project Structure
 
@@ -92,7 +92,8 @@ credit-scoring-fairness-audit/
 │   ├── raw/                     # git-ignored
 │   └── processed/               # git-ignored
 ├── notebooks/
-│   ├── 01-eda.ipynb
+│   ├── eda.ipynb                # data-quality audit of the whole train.csv
+│   ├── eda_train.ipynb          # EDA on the training part only (after the split)
 │   └── 02-threshold-analysis.ipynb
 ├── src/                         # preprocessing, training, fairness audit, API
 ├── models/                      # metrics.json committed; model files ignored
