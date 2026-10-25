@@ -33,7 +33,7 @@ A credit scoring model (score + probability + risk category) that passes a docum
 
 **The Request:** "A bank wants automatic credit scoring to evaluate customers. It must return a score, a probability, and a risk category. A report shows that results differ across demographic groups; before the model is used, we need an audit we can defend."
 
-**Business constraint:** TODO
+**Business constraint:** the cost of the two kinds of mistake is an assumption, not a figure from the data, which has no loan losses or margins. Approving a customer who then defaults (a false approval) is assumed to cost 5 times as much as rejecting a customer who would have repaid (a false rejection), because a defaulted loan loses principal while a rejection only loses the margin on one customer. With calibrated probabilities this means rejecting when the probability of default exceeds 1/(5+1), about 0.17. The threshold analysis uses this ratio and also shows 3:1 and 10:1, so the effect of the assumption is visible.
 
 **Success criteria:**
 
@@ -125,7 +125,22 @@ Exploration on this project is in `notebooks/`, so I recommend using Jupyterlab 
 jupyter lab
 ```
 
-TODO
+**Data.** Download `train.csv` and `test.csv` from the Kaggle dataset linked below and put them in `data/raw/` (git-ignored). `test.csv` has no `Credit_Score`, so nothing here evaluates on it; the held-out set is split from `train.csv`.
+
+**Notebooks, in this order:**
+
+1. `notebooks/eda.ipynb`: data-quality audit of the whole `train.csv`, ending with the cleaning rule of every column.
+2. `notebooks/eda_train.ipynb`: applies the cleaning, removes customers under 18, splits off a held-out part by `Customer_ID`, and analyses the training part only. The first run saves the held-out ids in `data/processed/` (git-ignored); later runs reload them, so the split never changes.
+
+Both notebooks open in Colab through the badge at the top. Their setup cell clones this repo, installs `requirements.txt` and copies the CSVs from `MyDrive/Projects/fairness-credit-scoring/` in Google Drive, so put the two CSV files there first.
+
+**Cleaning code and tests.** The cleaning lives in `src/cleaning.py` (layer 1: row rules the API can reuse; layer 2: filling from the same customer's other months) and the split in `src/split.py`. Run the tests from the repository root:
+
+```bash
+pytest tests -q            # add --cov=src for coverage
+```
+
+The model, the threshold analysis and the API are not built yet.
 
 ## Results
 
