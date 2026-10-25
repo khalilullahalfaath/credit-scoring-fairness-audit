@@ -78,10 +78,11 @@ A credit scoring model (score + probability + risk category) that passes a docum
 
 [Credit Score Classification](https://www.kaggle.com/datasets/parisrohan/credit-score-classification) (Kaggle). Anonymized/synthetic data, not real applicant records. Raw files go in `data/raw/` (git-ignored).
 
-- Rows / features: TODO
-- Target: TODO
-- Class balance: TODO
-- Sensitive-adjacent columns: TODO
+- Rows / features: 100,000 rows and 28 columns in `train.csv`: 12,500 customers observed for 8 months (one row per customer per month). `test.csv` (50,000 rows) has no `Credit_Score`, so it cannot be used for evaluation; the held-out set is split from `train.csv` by `Customer_ID`.
+- Target: `Credit_Score` (`Poor`, `Standard`, `Good`) is mapped to a binary `default_risk`: 1 for `Poor`, 0 for `Standard` and `Good`. The label changes between months for about 58% of customers, so it is a row-level label.
+- Class balance: `Standard` 53.2%, `Poor` 29.0%, `Good` 17.8%; the binary target has a base rate of 0.29 (before customers under 18 are removed).
+- Sensitive-adjacent columns: `Age` (audited, not a model feature), `Occupation` (secondary check), `Name` and `SSN` (identifiers, never used; `Name` can proxy gender or ethnicity). The data contains no gender or ethnicity column, so the audit covers age, with occupation as a secondary check.
+- Data quality: many columns contain placeholders, sentinel values and trailing underscores. The checks and the cleaning rule for every column are in `notebooks/eda.ipynb` (section "Cleaning decisions").
 
 ## Project Structure
 
